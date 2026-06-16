@@ -26,7 +26,7 @@ export function FeaturedArticle({ article }: FeaturedArticleProps) {
 
   return (
     <article className="group relative overflow-hidden rounded-xl bg-slate-900">
-      <Link href={`/news/${article.slug}`} className="relative block aspect-[3/4] min-h-[460px] sm:aspect-[21/9] sm:min-h-[400px]">
+      <Link href={`/news/${article.slug}`} className="relative block aspect-[3/4] min-h-[380px] sm:aspect-[21/9] sm:min-h-[320px]">
         <ArticleImage
           article={article}
           alt={title}
