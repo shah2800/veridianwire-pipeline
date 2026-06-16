@@ -1,5 +1,6 @@
 ﻿import type { Metadata } from 'next';
 import { Playfair_Display, Source_Sans_3 } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/next';
 import { Providers } from '@/components/providers/Providers';
 import { SITE, getSiteUrl } from '@/lib/site';
 import './globals.css';
@@ -64,6 +65,7 @@ export default function RootLayout({
     <html lang="en" className={`${playfair.variable} ${sourceSans.variable}`}>
       <body className="font-sans">
         <Providers>{children}</Providers>
+        <Analytics />
       </body>
     </html>
   );
