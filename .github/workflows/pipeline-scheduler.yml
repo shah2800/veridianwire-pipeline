@@ -1,0 +1,21 @@
+# Backup scheduler: triggers the main pipeline via API when schedule fires.
+# Helps on private repos where the main workflow schedule can be delayed.
+name: Pipeline Scheduler
+
+on:
+  schedule:
+    - cron: "8,38 * * * *"
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  trigger-pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger News Pipeline workflow
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run pipeline-cron.yml --repo "${{ github.repository }}" --ref main

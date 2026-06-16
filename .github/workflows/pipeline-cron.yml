@@ -2,9 +2,14 @@ name: News Pipeline (24/7 cron)
 
 on:
   schedule:
-    # Every 30 minutes
-    - cron: "*/30 * * * *"
+    # Every 30 minutes (offset from :00/:30 to reduce GitHub schedule drops)
+    - cron: "7,37 * * * *"
   workflow_dispatch:
+  repository_dispatch:
+    types: [run-pipeline]
+
+permissions:
+  contents: read
 
 concurrency:
   group: veridianwire-pipeline
