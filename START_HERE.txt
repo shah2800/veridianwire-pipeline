@@ -1,0 +1,110 @@
+================================================================================
+AUTONOMOUS NEWS BUSINESS SYSTEM - START HERE
+================================================================================
+
+You now have a complete, production-ready news system. Here's how to run it:
+
+================================================================================
+STEP 1: Get API Keys (5 minutes)
+================================================================================
+
+Copy and paste each link into your browser, sign up (free), and get the key:
+
+1. OpenAI: https://platform.openai.com/api-keys
+2. Groq: https://console.groq.com/keys
+3. NewsAPI: https://newsapi.org/register
+4. Supabase: https://supabase.com (create project, get key from Settings > API)
+
+Keep these keys handy for Step 2.
+
+================================================================================
+STEP 2: Run Setup (5 minutes)
+================================================================================
+
+In PowerShell, run this command:
+
+  .\WINDOWS_SETUP.bat
+
+This will:
+- Install Python packages
+- Install Node.js packages
+- Create .env file
+
+When it asks you to edit .env, it will open automatically.
+
+Paste the 5 API keys you got in Step 1 into the .env file, then save (Ctrl+S).
+
+================================================================================
+STEP 3: Start Daemon (run in PowerShell terminal #1)
+================================================================================
+
+  python start_daemon.py
+
+You should see:
+  "All checks passed! Starting daemon..."
+  "Starting pipeline cycle..."
+
+This is the main news-fetching engine. Leave it running.
+
+================================================================================
+STEP 4: Start Website (run in PowerShell terminal #2)
+================================================================================
+
+  cd website
+  npm run dev
+
+You should see:
+  "ready started server on 0.0.0.0:3000"
+
+This is the website showing your news.
+
+================================================================================
+STEP 5: Open In Browser
+================================================================================
+
+Go to: http://localhost:3000
+
+You should see the homepage. Articles are being fetched and published in the
+background every 10 minutes.
+
+================================================================================
+That's it! You're done.
+================================================================================
+
+The daemon is now:
+✓ Fetching from 10+ news sources
+✓ Filtering duplicates
+✓ Rewriting with AI
+✓ Publishing to your website
+
+Check the logs:
+  Get-Content logs/daemon.log -Tail 50
+
+Stop everything:
+  Press Ctrl+C in each terminal
+
+================================================================================
+Next Steps (Optional)
+================================================================================
+
+1. Deploy website to Vercel (free)
+2. Add custom domain
+3. Set up Google Analytics
+4. Add Google AdSense for monetization
+
+See: WINDOWS_QUICK_START.md (detailed guide)
+See: docs/SETUP.md (detailed documentation)
+See: docs/TROUBLESHOOTING.md (if something breaks)
+
+================================================================================
+Questions?
+================================================================================
+
+- Error when running setup? → docs/TROUBLESHOOTING.md
+- How does the system work? → docs/ARCHITECTURE.md
+- Detailed setup guide? → WINDOWS_QUICK_START.md
+- API key not working? → Check .env file exists and has the right key
+
+================================================================================
+You're all set! Start with STEP 1 above.
+================================================================================

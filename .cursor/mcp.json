@@ -1,0 +1,22 @@
+{
+  "mcpServers": {
+    "supabase": {
+      "url": "https://mcp.supabase.com/mcp?project_ref=awzukqmkmnucoxlkyeqs&features=database,development,debugging,docs"
+    },
+    "vercel": {
+      "url": "https://mcp.vercel.com"
+    },
+    "searchconsole-mcp": {
+      "command": "C:\\Windows\\System32\\cmd.exe",
+      "args": ["/c", "d:\\my ai projects 01.2\\completly auto ai which upload news and gethere news\\scripts\\mcp\\run_gsc.cmd"]
+    },
+    "oracle-oci-api-mcp-server": {
+      "command": "C:\\Windows\\System32\\cmd.exe",
+      "args": ["/c", "d:\\my ai projects 01.2\\completly auto ai which upload news and gethere news\\scripts\\mcp\\run_oracle.cmd"]
+    },
+    "github": {
+      "command": "C:\\Windows\\System32\\cmd.exe",
+      "args": ["/c", "d:\\my ai projects 01.2\\completly auto ai which upload news and gethere news\\scripts\\mcp\\run_github.cmd"]
+    }
+  }
+}

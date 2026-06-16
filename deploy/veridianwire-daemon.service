@@ -1,0 +1,18 @@
+[Unit]
+Description=Veridian Wire news pipeline (24/7)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=newsbot
+WorkingDirectory=/opt/veridianwire
+EnvironmentFile=/opt/veridianwire/.env
+ExecStart=/opt/veridianwire/.venv/bin/python start_daemon.py
+Restart=always
+RestartSec=30
+StandardOutput=append:/opt/veridianwire/logs/daemon.log
+StandardError=append:/opt/veridianwire/logs/daemon.log
+
+[Install]
+WantedBy=multi-user.target

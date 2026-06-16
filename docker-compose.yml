@@ -1,0 +1,91 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database (Supabase replacement for local dev)
+  postgres:
+    image: postgres:15-alpine
+    container_name: autonomous-news-postgres
+    environment:
+      POSTGRES_DB: news_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/migrations:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis (for queuing and caching)
+  redis:
+    image: redis:7-alpine
+    container_name: autonomous-news-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Python Daemon
+  daemon:
+    build:
+      context: .
+      dockerfile: Dockerfile.daemon
+    container_name: autonomous-news-daemon
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/news_db
+      - REDIS_URL=redis://redis:6379
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - NEWSAPI_API_KEY=${NEWSAPI_API_KEY}
+      - SERPAPI_API_KEY=${SERPAPI_API_KEY}
+      - LOG_LEVEL=INFO
+      - DEBUG=false
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./:/app
+      - ./daemon.log:/app/daemon.log
+    restart: unless-stopped
+
+  # Next.js Website
+  website:
+    build:
+      context: ./website
+      dockerfile: Dockerfile
+    container_name: autonomous-news-website
+    environment:
+      - NEXT_PUBLIC_SUPABASE_URL=${SUPABASE_URL}
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
+      - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    volumes:
+      - ./website:/app
+      - /app/node_modules
+      - /app/.next
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  default:
+    name: autonomous-news-network
+    driver: bridge
