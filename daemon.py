@@ -113,6 +113,7 @@ class NewsDaemon:
                 message=f"Cycle done: fetched {fetched}, published {published}",
                 details=stats,
             )
+            self.db.cleanup_old_logs(retention_days=30)
 
             if failure_rate > 0.1 and fetched > 5:
                 self.alerts.alert_error(

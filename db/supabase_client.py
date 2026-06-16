@@ -109,6 +109,23 @@ class SupabaseClient:
             logger.error(f"Failed to log: {e}")
             return {}
     
+    def cleanup_old_logs(self, retention_days: int = 30):
+        """Delete pipeline_logs older than retention_days. No FK references point to
+        this table, so it's safe to prune unconditionally to keep storage bounded."""
+        try:
+            from datetime import timedelta
+            cutoff = (datetime.utcnow() - timedelta(days=retention_days)).isoformat()
+            response = (
+                self.client.table("pipeline_logs")
+                .delete()
+                .lt("logged_at", cutoff)
+                .execute()
+            )
+            return len(response.data) if response.data else 0
+        except Exception as e:
+            logger.error(f"Failed to clean up old pipeline_logs: {e}")
+            return 0
+
     def health_check(self):
         try:
             self.client.table("raw_news").select("id").limit(1).execute()
