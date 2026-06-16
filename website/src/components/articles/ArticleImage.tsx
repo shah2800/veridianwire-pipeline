@@ -68,7 +68,6 @@ export function ArticleImage({
       src={src}
       alt={alt}
       fill={fill}
-      unoptimized={!isLocal}
       className={cn('object-cover', className)}
       sizes={sizes}
       priority={priority}
