@@ -54,6 +54,7 @@ $secretMap = @{
     NEWSAPI_API_KEY      = $envVars['NEWSAPI_API_KEY']
     SUPABASE_URL         = $envVars['SUPABASE_URL']
     SUPABASE_SERVICE_KEY = $envVars['SUPABASE_SERVICE_KEY']
+    SUPABASE_ANON_KEY      = $envVars['SUPABASE_ANON_KEY']
     SERPAPI_API_KEY      = $envVars['SERPAPI_API_KEY']
 }
 

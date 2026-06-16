@@ -18,7 +18,6 @@
     "api-discovery": "python -m fetchers.api_discovery"
   },
   "dependencies": {
-    "@next/swc-win32-x64-msvc": "14.2.33",
     "@supabase/ssr": "^0.12.0",
     "@supabase/supabase-js": "^2.38.0",
     "@tailwindcss/typography": "^0.5.20",
