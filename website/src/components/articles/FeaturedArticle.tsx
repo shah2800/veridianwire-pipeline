@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Clock, ShieldCheck } from 'lucide-react';
+import { Clock } from 'lucide-react';
 import type { PublishedArticle } from '@/types/article';
 import {
   getArticleTitle,
@@ -22,7 +22,6 @@ export function FeaturedArticle({ article }: FeaturedArticleProps) {
   const title = getArticleTitle(article);
   const category = getArticleCategory(article);
   const readingTime = getReadingTime(article.content);
-  const factScore = seo.fact_check_score ?? article.fact_check_score;
 
   return (
     <article className="group relative overflow-hidden rounded-xl bg-slate-900">
@@ -45,12 +44,6 @@ export function FeaturedArticle({ article }: FeaturedArticleProps) {
             >
               {getCategoryLabel(category)}
             </span>
-            {factScore !== undefined && factScore > 0 && (
-              <span className="flex items-center gap-1 text-xs text-emerald-300">
-                <ShieldCheck className="h-3.5 w-3.5" />
-                {(factScore * 100).toFixed(0)}% verified
-              </span>
-            )}
           </div>
           <h2 className="mb-2 max-w-4xl font-serif text-xl font-bold leading-tight text-white sm:mb-3 sm:text-4xl lg:text-5xl">
             {title}
