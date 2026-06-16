@@ -26,7 +26,7 @@ export function FeaturedArticle({ article }: FeaturedArticleProps) {
 
   return (
     <article className="group relative overflow-hidden rounded-xl bg-slate-900">
-      <Link href={`/news/${article.slug}`} className="relative block aspect-[21/9] min-h-[320px] sm:min-h-[400px]">
+      <Link href={`/news/${article.slug}`} className="relative block aspect-[3/4] min-h-[460px] sm:aspect-[21/9] sm:min-h-[400px]">
         <ArticleImage
           article={article}
           alt={title}
@@ -35,8 +35,8 @@ export function FeaturedArticle({ article }: FeaturedArticleProps) {
           className="opacity-60 transition-transform duration-700 group-hover:scale-105 group-hover:opacity-50"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-10">
-          <div className="mb-3 flex flex-wrap items-center gap-3">
+        <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-10">
+          <div className="mb-2 flex flex-wrap items-center gap-2 sm:mb-3 sm:gap-3">
             <span className="rounded bg-news-red px-3 py-1 text-xs font-bold uppercase tracking-widest text-white">
               Breaking
             </span>
@@ -53,11 +53,11 @@ export function FeaturedArticle({ article }: FeaturedArticleProps) {
               </span>
             )}
           </div>
-          <h2 className="mb-3 max-w-4xl font-serif text-2xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl">
+          <h2 className="mb-2 max-w-4xl font-serif text-xl font-bold leading-tight text-white sm:mb-3 sm:text-4xl lg:text-5xl">
             {title}
           </h2>
           {seo.meta_description && (
-            <p className="mb-4 max-w-2xl line-clamp-2 text-base text-slate-300 sm:text-lg">
+            <p className="mb-3 hidden max-w-2xl line-clamp-2 text-base text-slate-300 sm:mb-4 sm:block sm:text-lg">
               {seo.meta_description}
             </p>
           )}
