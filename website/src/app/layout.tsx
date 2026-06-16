@@ -1,9 +1,12 @@
 ﻿import type { Metadata } from 'next';
 import { Playfair_Display, Source_Sans_3 } from 'next/font/google';
+import Script from 'next/script';
 import { Analytics } from '@vercel/analytics/next';
 import { Providers } from '@/components/providers/Providers';
 import { SITE, getSiteUrl } from '@/lib/site';
 import './globals.css';
+
+const GA_MEASUREMENT_ID = 'G-28HT27SQE0';
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -66,6 +69,18 @@ export default function RootLayout({
       <body className="font-sans">
         <Providers>{children}</Providers>
         <Analytics />
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="ga4-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_MEASUREMENT_ID}');
+          `}
+        </Script>
       </body>
     </html>
   );
