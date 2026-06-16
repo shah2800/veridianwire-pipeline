@@ -17,6 +17,18 @@ export const SITE = {
   },
 } as const;
 
+const PLACEHOLDER_HOSTS = new Set(['your-domain.com', 'example.com']);
+
 export function getSiteUrl(): string {
-  return process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+  const raw = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (!raw) return 'http://localhost:3000';
+  try {
+    const parsed = new URL(raw.startsWith('http') ? raw : `https://${raw}`);
+    if (PLACEHOLDER_HOSTS.has(parsed.hostname)) {
+      return 'http://localhost:3000';
+    }
+    return parsed.origin;
+  } catch {
+    return 'http://localhost:3000';
+  }
 }

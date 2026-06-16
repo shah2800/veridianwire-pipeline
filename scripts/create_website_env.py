@@ -18,11 +18,26 @@ def load_env(path: Path) -> dict[str, str]:
         values[key.strip()] = val.strip().strip('"').strip("'")
     return values
 
+def normalize_site_url(raw: str | None) -> str:
+    default = "http://localhost:3000"
+    if not raw:
+        return default
+    value = raw.strip().strip('"').strip("'")
+    placeholders = {"your-domain.com", "example.com", "localhost"}
+    if value.lower() in placeholders or "your-domain" in value.lower():
+        return default
+    if not value.startswith("http://") and not value.startswith("https://"):
+        value = f"https://{value}"
+    return value
+
+
 def main() -> None:
     env = load_env(ENV_FILE)
     url = env.get("SUPABASE_URL", "")
     anon = env.get("SUPABASE_ANON_KEY", "")
-    site = env.get("DOMAIN_NAME", "http://localhost:3000")
+    site = normalize_site_url(
+        env.get("NEXT_PUBLIC_SITE_URL") or env.get("DOMAIN_NAME")
+    )
     if not url.startswith("http"):
         site = "http://localhost:3000"
 
