@@ -40,12 +40,11 @@ export function FeaturedArticle({ article }: FeaturedArticleProps) {
             <span className="rounded bg-news-red px-3 py-1 text-xs font-bold uppercase tracking-widest text-white">
               Breaking
             </span>
-            <Link
-              href={`/category/${category}`}
+            <span
               className={cn('rounded px-2.5 py-1 text-xs font-semibold uppercase', getCategoryColor(category))}
             >
               {getCategoryLabel(category)}
-            </Link>
+            </span>
             {factScore !== undefined && factScore > 0 && (
               <span className="flex items-center gap-1 text-xs text-emerald-300">
                 <ShieldCheck className="h-3.5 w-3.5" />
