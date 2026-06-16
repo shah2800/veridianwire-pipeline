@@ -1,6 +1,7 @@
 name: Deploy
 
 on:
+  workflow_dispatch:
   push:
     branches: [main, master]
 
@@ -9,21 +10,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-      - run: npm install
-      - run: pip install -r requirements.txt
-      - run: npm run build
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build website
+        run: npm run build
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
-      - name: Deploy Vercel
-        if: ${{ secrets.VERCEL_TOKEN != '' }}
-        run: npx vercel --prod --yes --token "${{ secrets.VERCEL_TOKEN }}"
+
+      - name: Deploy to Vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "VERCEL_TOKEN not set — skipping Vercel deploy."
+            exit 0
+          fi
+          npx vercel --prod --yes --token "$VERCEL_TOKEN"
         working-directory: website
