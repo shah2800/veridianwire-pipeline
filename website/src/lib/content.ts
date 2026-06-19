@@ -1,4 +1,4 @@
-import DOMPurify from 'isomorphic-dompurify';
+import sanitizeHtml from 'sanitize-html';
 
 const ALLOWED_TAGS = [
   'p', 'br', 'strong', 'em', 'b', 'i', 'u', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
@@ -6,14 +6,18 @@ const ALLOWED_TAGS = [
   'img', 'table', 'thead', 'tbody', 'tr', 'th', 'td', 'hr', 'pre', 'code',
 ];
 
-const ALLOWED_ATTR = ['href', 'target', 'rel', 'class', 'src', 'alt', 'title', 'width', 'height'];
+const SANITIZE_OPTIONS: sanitizeHtml.IOptions = {
+  allowedTags: ALLOWED_TAGS,
+  allowedAttributes: {
+    a: ['href', 'target', 'rel', 'title'],
+    img: ['src', 'alt', 'title', 'width', 'height'],
+    '*': ['class'],
+  },
+  allowedSchemes: ['http', 'https', 'mailto'],
+};
 
 export function sanitizeArticleContent(html: string): string {
-  return DOMPurify.sanitize(html, {
-    ALLOWED_TAGS,
-    ALLOWED_ATTR,
-    ALLOW_DATA_ATTR: false,
-  });
+  return sanitizeHtml(html, SANITIZE_OPTIONS);
 }
 
 export function contentToPlainText(html: string): string {
