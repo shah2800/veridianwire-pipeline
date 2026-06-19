@@ -56,6 +56,22 @@ class FetchManager:
                 unique.append(article)
         return unique
 
+    @staticmethod
+    def _recency_key(article: Dict) -> float:
+        """Epoch seconds for sorting; unknown/unparseable dates sort to the bottom."""
+        raw = article.get("published_at") or article.get("publishedAt")
+        if not raw:
+            return 0.0
+        try:
+            from dateutil import parser as _dp
+            dt = _dp.parse(raw)
+            return dt.timestamp()
+        except Exception:
+            return 0.0
+
+    def _sort_by_recency(self, articles: List[Dict]) -> List[Dict]:
+        return sorted(articles, key=self._recency_key, reverse=True)
+
     def fetch_all_sources(self, limit: int = 100) -> List[Dict]:
         """Fetch from all sources with fallback chain."""
         all_articles: List[Dict] = []
@@ -84,12 +100,12 @@ class FetchManager:
             self.last_status["gdelt"] = "failed"
             logger.error(f"GDELT failed: {e}")
 
-        unique = self._dedupe_urls(all_articles)
+        unique = self._sort_by_recency(self._dedupe_urls(all_articles))
 
         if unique:
             self._cache = unique
             self._save_cache(unique)
-            logger.info(f"Fetched {len(unique)} unique articles")
+            logger.info(f"Fetched {len(unique)} unique articles (sorted newest first)")
             return unique[:limit]
 
         if self._cache:
