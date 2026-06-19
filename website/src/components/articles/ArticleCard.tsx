@@ -95,7 +95,7 @@ export function ArticleCard({ article, variant = 'default', priority }: ArticleC
         )}
         <div className="flex items-center gap-2 text-xs text-slate-500">
           <Clock className="h-3.5 w-3.5" />
-          <time>{formatDate(article.published_at, 'relative')}</time>
+          <time>{formatDate(article.published_at)}</time>
           <span>·</span>
           <span>{readingTime} min read</span>
         </div>
