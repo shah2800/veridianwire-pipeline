@@ -55,7 +55,7 @@ export function FeaturedArticle({ article }: FeaturedArticleProps) {
           )}
           <div className="flex items-center gap-3 text-sm text-slate-400">
             <Clock className="h-4 w-4" />
-            <time>{formatDate(article.published_at)}</time>
+            <time>{formatDate(article.published_at, 'relative')}</time>
             <span>·</span>
             <span>{readingTime} min read</span>
           </div>
