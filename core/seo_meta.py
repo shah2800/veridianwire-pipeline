@@ -8,6 +8,15 @@ def _slugify(title: str) -> str:
     return re.sub(r"[-\s]+", "-", slug).strip("-")[:200] or "article"
 
 
+def clean_title(title: str, max_len: int = 110) -> str:
+    """Trim a headline at a word boundary so it never cuts mid-word (e.g. '...$62.5M, ey')."""
+    t = (title or "News Article").strip()
+    if len(t) <= max_len:
+        return t
+    cut = t[:max_len].rsplit(" ", 1)[0]
+    return cut.rstrip(" ,;:-–—") or t[:max_len]
+
+
 def basic_seo_meta(title: str, content: str, source: str = "news") -> Dict:
     """Build SEO meta from title and content when LLM is unavailable."""
     from core.rewrite_quality import extract_clean_summary
@@ -19,7 +28,7 @@ def basic_seo_meta(title: str, content: str, source: str = "news") -> Dict:
             desc = desc[:297] + "..."
     category = _guess_category(title, content)
     return {
-        "meta_title": (title or "News Article")[:70],
+        "meta_title": clean_title(title),
         "meta_description": desc or "Latest news and analysis.",
         "keywords": ", ".join(_extract_keywords(title, content)[:8]),
         "category": category,
