@@ -7,13 +7,16 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { NewsletterForm } from '@/components/layout/NewsletterForm';
 import { CATEGORIES } from '@/lib/categories';
 import { getArticleCategory } from '@/lib/utils';
+import { resolveArticleMedia } from '@/lib/media';
 import { SITE, getSiteUrl } from '@/lib/site';
 import { TrendingUp, Zap } from 'lucide-react';
 
 export const revalidate = 300;
 
 export default async function HomePage() {
-  const articles = await getPublishedArticles(50);
+  const allArticles = await getPublishedArticles(80);
+  // Homepage only features articles that have a real image (no placeholders here).
+  const articles = allArticles.filter((a) => !resolveArticleMedia(a).isPlaceholder);
   const featured = articles[0];
   const latest = articles.slice(1, 7);
   const trending = articles.slice(7, 13);
@@ -51,7 +54,7 @@ export default async function HomePage() {
                     Latest News
                   </h2>
                   <Link
-                    href="/search"
+                    href="/news"
                     className="text-sm font-semibold text-news-red hover:underline"
                   >
                     View all →

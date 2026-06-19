@@ -74,20 +74,12 @@ class RSSFetcher:
     """
 
     def __init__(self):
+        # NOTE: Google News RSS is intentionally NOT used. Its entries carry no
+        # image, and its links are encoded redirects (news.google.com/rss/articles/...)
+        # that don't resolve to the real article, so we can't fetch an OG image or
+        # show a working source link. Direct publisher feeds below provide images,
+        # real source URLs, and are equally fresh.
         self.feeds = {
-            # ---- Google News (each aggregates 100s of publishers, near real-time) ----
-            "google_top": "https://news.google.com/rss?hl=en-US&gl=US&ceid=US:en",
-            "google_world": "https://news.google.com/rss/headlines/section/topic/WORLD?hl=en-US&gl=US&ceid=US:en",
-            "google_business": "https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=en-US&gl=US&ceid=US:en",
-            "google_technology": "https://news.google.com/rss/headlines/section/topic/TECHNOLOGY?hl=en-US&gl=US&ceid=US:en",
-            "google_science": "https://news.google.com/rss/headlines/section/topic/SCIENCE?hl=en-US&gl=US&ceid=US:en",
-            "google_health": "https://news.google.com/rss/headlines/section/topic/HEALTH?hl=en-US&gl=US&ceid=US:en",
-            "google_sports": "https://news.google.com/rss/headlines/section/topic/SPORTS?hl=en-US&gl=US&ceid=US:en",
-            "google_entertainment": "https://news.google.com/rss/headlines/section/topic/ENTERTAINMENT?hl=en-US&gl=US&ceid=US:en",
-            "google_ai": "https://news.google.com/rss/search?q=artificial+intelligence+when:1d&hl=en-US&gl=US&ceid=US:en",
-            "google_politics": "https://news.google.com/rss/search?q=politics+when:1d&hl=en-US&gl=US&ceid=US:en",
-            "google_crypto": "https://news.google.com/rss/search?q=cryptocurrency+when:1d&hl=en-US&gl=US&ceid=US:en",
-
             # ---- World / General ----
             "bbc": "https://feeds.bbc.co.uk/news/rss.xml",
             "bbc_world": "https://feeds.bbc.co.uk/news/world/rss.xml",

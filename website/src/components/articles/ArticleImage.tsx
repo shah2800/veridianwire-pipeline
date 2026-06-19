@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { cn, getArticleCategory } from '@/lib/utils';
 import type { PublishedArticle } from '@/types/article';
 import { resolveArticleMedia, getPlaceholderPath } from '@/lib/media';
-import { Newspaper } from 'lucide-react';
 
 interface ArticleImageProps {
   article: PublishedArticle;
@@ -40,26 +39,15 @@ export function ArticleImage({
 
   if (failed || (media.isPlaceholder && isLocal)) {
     return (
-      <div
-        className={cn(
-          'flex items-center justify-center bg-gradient-to-br from-slate-800 to-slate-900',
-          fill ? 'absolute inset-0' : 'h-full w-full',
-          className
-        )}
-      >
-        <Image
-          src={fallback}
-          alt={alt}
-          fill={fill}
-          unoptimized
-          className={cn('object-cover', className)}
-          sizes={sizes}
-          priority={priority}
-        />
-        <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-          <Newspaper className="h-12 w-12 text-white/30" />
-        </div>
-      </div>
+      <Image
+        src={fallback}
+        alt={alt}
+        fill={fill}
+        unoptimized
+        className={cn('object-cover', className)}
+        sizes={sizes}
+        priority={priority}
+      />
     );
   }
 

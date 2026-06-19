@@ -63,7 +63,18 @@ export function Header() {
             >
               Home
             </Link>
-            {CATEGORIES.slice(0, 5).map((cat) => (
+            <Link
+              href="/news"
+              className={cn(
+                'rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                isActive('/news')
+                  ? 'bg-red-50 text-news-red'
+                  : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900'
+              )}
+            >
+              All News
+            </Link>
+            {CATEGORIES.slice(0, 4).map((cat) => (
               <Link
                 key={cat.slug}
                 href={`/category/${cat.slug}`}
@@ -183,6 +194,13 @@ export function Header() {
               className="block rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100"
             >
               Home
+            </Link>
+            <Link
+              href="/news"
+              onClick={() => setMobileOpen(false)}
+              className="block rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100"
+            >
+              All News
             </Link>
             {CATEGORIES.map((cat) => (
               <Link

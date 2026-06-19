@@ -10,6 +10,7 @@ export async function GET() {
 
   const staticPages = [
     { loc: base, changefreq: 'hourly', priority: '1.0' },
+    { loc: `${base}/news`, changefreq: 'hourly', priority: '0.9' },
     { loc: `${base}/about`, changefreq: 'monthly', priority: '0.5' },
     { loc: `${base}/search`, changefreq: 'weekly', priority: '0.6' },
     ...CATEGORIES.map((cat) => ({

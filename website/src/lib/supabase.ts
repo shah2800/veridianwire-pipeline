@@ -45,6 +45,30 @@ export async function getPublishedArticles(limit = 50): Promise<PublishedArticle
   return getFallbackArticles().slice(0, limit);
 }
 
+export async function getPublishedArticlesPage(
+  page = 1,
+  pageSize = 24
+): Promise<{ articles: PublishedArticle[]; total: number }> {
+  const from = (page - 1) * pageSize;
+  const to = from + pageSize - 1;
+  try {
+    const { data, error, count } = await supabase
+      .from('published_articles')
+      .select('*', { count: 'exact' })
+      .order('published_at', { ascending: false })
+      .range(from, to);
+
+    if (!error && data) {
+      return { articles: data as PublishedArticle[], total: count ?? data.length };
+    }
+  } catch (err) {
+    console.error('Error fetching article page:', err);
+  }
+
+  const fallback = getFallbackArticles();
+  return { articles: fallback.slice(from, to + 1), total: fallback.length };
+}
+
 export async function getArticleBySlug(slug: string): Promise<PublishedArticle | null> {
   try {
     const { data, error } = await supabase
